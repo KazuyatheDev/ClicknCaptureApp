@@ -1,12 +1,11 @@
+import { kv } from '@vercel/kv';
 import fs from 'fs';
 import path from 'path';
 
-// For production deployment - use /tmp directory which is writable in Vercel
-const dataFilePath = process.env.NODE_ENV === 'production' 
-  ? path.join('/tmp', 'cameras.json')
-  : path.join(process.cwd(), 'data', 'cameras.json');
+// Fallback for local development - use local file system
+const dataFilePath = path.join(process.cwd(), 'data', 'cameras.json');
 
-// Ensure data directory exists
+// Ensure data directory exists (for local development)
 function ensureDataDirectory() {
   const dataDir = path.dirname(dataFilePath);
   if (!fs.existsSync(dataDir)) {
@@ -118,20 +117,34 @@ const sampleCameras = [
 // Storage functions
 export async function getCameras() {
   try {
-    // Always ensure directory exists
-    ensureDataDirectory();
-    
-    // Check if JSON file exists
-    if (fs.existsSync(dataFilePath)) {
-      const data = fs.readFileSync(dataFilePath, 'utf8');
-      const cameras = JSON.parse(data);
-      console.log(`Loaded ${cameras.length} cameras from ${dataFilePath}`);
-      return cameras;
+    // Use Vercel KV in production, local file system in development
+    if (process.env.NODE_ENV === 'production') {
+      console.log('Loading cameras from Vercel KV...');
+      const cameras = await kv.get('cameras');
+      
+      if (cameras && Array.isArray(cameras)) {
+        console.log(`Loaded ${cameras.length} cameras from Vercel KV`);
+        return cameras;
+      } else {
+        // Initialize KV with sample data
+        console.log('Initializing Vercel KV with sample cameras data');
+        await kv.set('cameras', sampleCameras);
+        return sampleCameras;
+      }
     } else {
-      // Create initial file with sample data
-      console.log('Creating initial cameras data file');
-      fs.writeFileSync(dataFilePath, JSON.stringify(sampleCameras, null, 2));
-      return sampleCameras;
+      // Local development - use file system
+      ensureDataDirectory();
+      
+      if (fs.existsSync(dataFilePath)) {
+        const data = fs.readFileSync(dataFilePath, 'utf8');
+        const cameras = JSON.parse(data);
+        console.log(`Loaded ${cameras.length} cameras from ${dataFilePath}`);
+        return cameras;
+      } else {
+        console.log('Creating initial cameras data file');
+        fs.writeFileSync(dataFilePath, JSON.stringify(sampleCameras, null, 2));
+        return sampleCameras;
+      }
     }
   } catch (error) {
     console.error('Error reading cameras data:', error.message);
@@ -142,9 +155,17 @@ export async function getCameras() {
 
 export async function saveCameras(cameras) {
   try {
-    ensureDataDirectory();
-    fs.writeFileSync(dataFilePath, JSON.stringify(cameras, null, 2));
-    console.log(`Cameras data saved successfully to ${dataFilePath}`);
+    // Use Vercel KV in production, local file system in development
+    if (process.env.NODE_ENV === 'production') {
+      console.log('Saving cameras to Vercel KV...');
+      await kv.set('cameras', cameras);
+      console.log(`Cameras data saved successfully to Vercel KV (${cameras.length} cameras)`);
+    } else {
+      // Local development - use file system
+      ensureDataDirectory();
+      fs.writeFileSync(dataFilePath, JSON.stringify(cameras, null, 2));
+      console.log(`Cameras data saved successfully to ${dataFilePath}`);
+    }
   } catch (error) {
     console.error('Error saving cameras data:', error.message);
     throw new Error('Failed to save cameras data: ' + error.message);

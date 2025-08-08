@@ -26,7 +26,12 @@
       "Bash(git reset:*)",
       "Bash(git rm:*)",
       "Bash(cat:*)",
-      "WebFetch(domain:clickncapture.vercel.app)"
+      "WebFetch(domain:clickncapture.vercel.app)",
+      "WebFetch(domain:clickncaptureapp-j659sf6qz-kazuyas-projects-67d1bd55.vercel.app)",
+      "WebFetch(domain:clickncaptureapp-lvvh2qpqp-kazuyas-projects-67d1bd55.vercel.app)",
+      "WebFetch(domain:clickandcapture.vercel.app)",
+      "WebFetch(domain:clickandcapture-buorhoqy8-kazuyas-projects-67d1bd55.vercel.app)",
+      "WebFetch(domain:clickandcapture-glei08q2d-kazuyas-projects-67d1bd55.vercel.app)"
     ],
     "deny": []
   }
