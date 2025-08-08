@@ -1,13 +1,15 @@
-// Shared in-memory storage for development
-let camerasStore = [];
+import fs from 'fs';
+import path from 'path';
 
-// Try to import KV, but fallback gracefully if not available
-let kv;
-try {
-  kv = require('@vercel/kv').kv;
-} catch (e) {
-  console.log('Vercel KV not available, using in-memory storage');
-  kv = null;
+// Path to JSON file
+const dataFilePath = path.join(process.cwd(), 'data', 'cameras.json');
+
+// Ensure data directory exists
+function ensureDataDirectory() {
+  const dataDir = path.dirname(dataFilePath);
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
 }
 
 // Sample data for initialization
@@ -113,36 +115,31 @@ const sampleCameras = [
 
 // Storage functions
 export async function getCameras() {
-  if (kv) {
-    try {
-      let cameras = await kv.get('cameras');
-      if (!cameras) {
-        cameras = sampleCameras;
-        await kv.set('cameras', cameras);
-      }
-      return cameras;
-    } catch (error) {
-      console.error('KV error, falling back to memory:', error);
+  try {
+    ensureDataDirectory();
+    
+    // Check if JSON file exists
+    if (fs.existsSync(dataFilePath)) {
+      const data = fs.readFileSync(dataFilePath, 'utf8');
+      return JSON.parse(data);
+    } else {
+      // Create initial file with sample data
+      fs.writeFileSync(dataFilePath, JSON.stringify(sampleCameras, null, 2));
+      return sampleCameras;
     }
+  } catch (error) {
+    console.error('Error reading cameras data:', error);
+    return sampleCameras;
   }
-  
-  // Use in-memory storage
-  if (camerasStore.length === 0) {
-    camerasStore = [...sampleCameras];
-  }
-  return camerasStore;
 }
 
 export async function saveCameras(cameras) {
-  if (kv) {
-    try {
-      await kv.set('cameras', cameras);
-      return;
-    } catch (error) {
-      console.error('KV error, falling back to memory:', error);
-    }
+  try {
+    ensureDataDirectory();
+    fs.writeFileSync(dataFilePath, JSON.stringify(cameras, null, 2));
+    console.log('Cameras data saved successfully');
+  } catch (error) {
+    console.error('Error saving cameras data:', error);
+    throw new Error('Failed to save cameras data');
   }
-  
-  // Use in-memory storage
-  camerasStore = cameras;
 }
