@@ -69,9 +69,9 @@ export default function FAQPage() {
             </div>
             
             <nav className="nav-menu">
-              <Link href="/" style={{color: 'black', textDecoration: 'none'}}>Home</Link>
-              <Link href="/terms" style={{color: 'black', textDecoration: 'none'}}>Terms & Conditions</Link>
-              <Link href="/faq" className="active" style={{color: 'black', textDecoration: 'none'}}>FAQ</Link>
+              <Link href="/">Home</Link>
+              <Link href="/terms">Terms & Conditions</Link>
+              <Link href="/faq" className="active">FAQ</Link>
             </nav>
             
             <div className="mobile-menu-btn" onClick={() => {
@@ -83,9 +83,9 @@ export default function FAQPage() {
           </div>
           
           <div className="mobile-nav">
-            <Link href="/" style={{color: 'black', textDecoration: 'none'}}>Home</Link>
-            <Link href="/terms" style={{color: 'black', textDecoration: 'none'}}>Terms & Conditions</Link>
-            <Link href="/faq" style={{color: 'black', textDecoration: 'none'}}>FAQ</Link>
+            <Link href="/">Home</Link>
+            <Link href="/terms">Terms & Conditions</Link>
+            <Link href="/faq">FAQ</Link>
           </div>
         </header>
 
