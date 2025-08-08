@@ -1,8 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 
-// Path to JSON file
-const dataFilePath = path.join(process.cwd(), 'data', 'cameras.json');
+// For production deployment - use /tmp directory which is writable in Vercel
+const dataFilePath = process.env.NODE_ENV === 'production' 
+  ? path.join('/tmp', 'cameras.json')
+  : path.join(process.cwd(), 'data', 'cameras.json');
 
 // Ensure data directory exists
 function ensureDataDirectory() {
@@ -116,19 +118,24 @@ const sampleCameras = [
 // Storage functions
 export async function getCameras() {
   try {
+    // Always ensure directory exists
     ensureDataDirectory();
     
     // Check if JSON file exists
     if (fs.existsSync(dataFilePath)) {
       const data = fs.readFileSync(dataFilePath, 'utf8');
-      return JSON.parse(data);
+      const cameras = JSON.parse(data);
+      console.log(`Loaded ${cameras.length} cameras from ${dataFilePath}`);
+      return cameras;
     } else {
       // Create initial file with sample data
+      console.log('Creating initial cameras data file');
       fs.writeFileSync(dataFilePath, JSON.stringify(sampleCameras, null, 2));
       return sampleCameras;
     }
   } catch (error) {
-    console.error('Error reading cameras data:', error);
+    console.error('Error reading cameras data:', error.message);
+    console.log('Falling back to sample data');
     return sampleCameras;
   }
 }
@@ -137,9 +144,9 @@ export async function saveCameras(cameras) {
   try {
     ensureDataDirectory();
     fs.writeFileSync(dataFilePath, JSON.stringify(cameras, null, 2));
-    console.log('Cameras data saved successfully');
+    console.log(`Cameras data saved successfully to ${dataFilePath}`);
   } catch (error) {
-    console.error('Error saving cameras data:', error);
-    throw new Error('Failed to save cameras data');
+    console.error('Error saving cameras data:', error.message);
+    throw new Error('Failed to save cameras data: ' + error.message);
   }
 }
