@@ -18,7 +18,7 @@ export default function TermsPage() {
         <header className="header">
           <div className="header-container">
             <div className="logo-section">
-              <Link href="/">
+              <Link href="/" style={{color: 'inherit', textDecoration: 'none'}}>
                 <div className="logo">
                   <img src="/assets/logoclick.jpg" alt="Click & Capture Rentals" className="logo-image" />
                   <span className="business-name" >Click & Capture Rentals</span>
