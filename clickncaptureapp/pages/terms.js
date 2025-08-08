@@ -27,9 +27,9 @@ export default function TermsPage() {
             </div>
             
             <nav className="nav-menu">
-              <Link href="/">Home</Link>
-              <Link href="/terms" className="active">Terms & Conditions</Link>
-              <Link href="/faq">FAQ</Link>
+              <Link href="/" style={{color: '#3d2e1f', textDecoration: 'none'}}>Home</Link>
+              <Link href="/terms" className="active" style={{color: '#3d2e1f', textDecoration: 'none'}}>Terms & Conditions</Link>
+              <Link href="/faq" style={{color: '#3d2e1f', textDecoration: 'none'}}>FAQ</Link>
             </nav>
             
             <div className="mobile-menu-btn" onClick={() => {
@@ -41,9 +41,9 @@ export default function TermsPage() {
           </div>
           
           <div className="mobile-nav">
-            <Link href="/">Home</Link>
-            <Link href="/terms">Terms & Conditions</Link>
-            <Link href="/faq">FAQ</Link>
+            <Link href="/" style={{color: '#3d2e1f', textDecoration: 'none'}}>Home</Link>
+            <Link href="/terms" style={{color: '#3d2e1f', textDecoration: 'none'}}>Terms & Conditions</Link>
+            <Link href="/faq" style={{color: '#3d2e1f', textDecoration: 'none'}}>FAQ</Link>
           </div>
         </header>
 

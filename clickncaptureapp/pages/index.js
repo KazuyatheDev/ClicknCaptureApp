@@ -149,9 +149,9 @@ export default function HomePage() {
             </div>
             
             <nav className="nav-menu">
-              <Link href="/" className="active">Home</Link>
-              <Link href="/terms">Terms & Conditions</Link>
-              <Link href="/faq">FAQ</Link>
+              <Link href="/" className="active" style={{color: '#3d2e1f', textDecoration: 'none'}}>Home</Link>
+              <Link href="/terms" style={{color: '#3d2e1f', textDecoration: 'none'}}>Terms & Conditions</Link>
+              <Link href="/faq" style={{color: '#3d2e1f', textDecoration: 'none'}}>FAQ</Link>
             </nav>
             
             <div className="mobile-menu-btn" onClick={() => {
@@ -163,9 +163,9 @@ export default function HomePage() {
           </div>
           
           <div className="mobile-nav">
-            <Link href="/">Home</Link>
-            <Link href="/terms">Terms & Conditions</Link>
-            <Link href="/faq">FAQ</Link>
+            <Link href="/" style={{color: '#3d2e1f', textDecoration: 'none'}}>Home</Link>
+            <Link href="/terms" style={{color: '#3d2e1f', textDecoration: 'none'}}>Terms & Conditions</Link>
+            <Link href="/faq" style={{color: '#3d2e1f', textDecoration: 'none'}}>FAQ</Link>
           </div>
         </header>
 
@@ -454,8 +454,6 @@ export default function HomePage() {
           }
           
           .nav-menu a {
-            color: #3d2e1f !important;
-            text-decoration: none !important;
             font-weight: 500;
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
@@ -468,19 +466,7 @@ export default function HomePage() {
           }
 
           .nav-menu a:hover {
-            color: #8b6f3e !important;
             background: rgba(139, 111, 62, 0.1);
-            text-decoration: none !important;
-          }
-
-          .nav-menu a:visited {
-            color: #3d2e1f !important;
-            text-decoration: none !important;
-          }
-
-          .nav-menu a:active {
-            color: #3d2e1f !important;
-            text-decoration: none !important;
           }
 
           .mobile-menu-btn {
@@ -514,8 +500,6 @@ export default function HomePage() {
           }
 
           .mobile-nav a {
-            color: #3d2e1f !important;
-            text-decoration: none !important;
             padding: 1rem 1.5rem;
             border-radius: 8px;
             transition: all 0.3s ease;
@@ -526,19 +510,7 @@ export default function HomePage() {
           }
 
           .mobile-nav a:hover {
-            color: #8b6f3e !important;
             background: rgba(139, 111, 62, 0.1);
-            text-decoration: none !important;
-          }
-
-          .mobile-nav a:visited {
-            color: #3d2e1f !important;
-            text-decoration: none !important;
-          }
-
-          .mobile-nav a:active {
-            color: #3d2e1f !important;
-            text-decoration: none !important;
           }
 
 
