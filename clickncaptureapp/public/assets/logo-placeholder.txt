@@ -1,0 +1,4 @@
+Place your logoclck.jpg file here.
+
+For now, the design will use a text logo placeholder.
+Replace this file with your actual logo: logoclck.jpg
