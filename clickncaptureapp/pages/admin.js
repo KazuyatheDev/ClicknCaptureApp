@@ -156,7 +156,7 @@ export default function AdminPage() {
           <style jsx>{`
             .login-page {
               min-height: 100vh;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              background: white;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -171,8 +171,8 @@ export default function AdminPage() {
             .login-form {
               background: white;
               padding: 40px;
-              border-radius: 20px;
-              box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+              border: 1px solid #e1e5e9;
+              border-radius: 8px;
               text-align: center;
             }
 
@@ -209,16 +209,16 @@ export default function AdminPage() {
 
             .password-input:focus {
               outline: none;
-              border-color: #667eea;
+              border-color: #3d2e1f;
             }
 
             .login-btn {
               width: 100%;
               padding: 15px;
-              background: linear-gradient(135deg, #667eea, #764ba2);
+              background: #3d2e1f;
               color: white;
               border: none;
-              border-radius: 10px;
+              border-radius: 8px;
               font-size: 16px;
               font-weight: bold;
               cursor: pointer;
@@ -226,8 +226,7 @@ export default function AdminPage() {
             }
 
             .login-btn:hover:not(:disabled) {
-              transform: translateY(-2px);
-              box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+              background: #5a4a3a;
             }
 
             .login-btn:disabled {
@@ -301,14 +300,14 @@ export default function AdminPage() {
         <style jsx>{`
           .admin-page {
             min-height: 100vh;
-            background-color: #f8f9fa;
+            background-color: white;
           }
 
           .admin-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: #3d2e1f;
             padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 1px solid #e1e5e9;
           }
 
           .header-content {
@@ -342,14 +341,14 @@ export default function AdminPage() {
           .admin-text {
             font-size: 1.2rem;
             font-weight: bold;
-            color: white;
+            color: #3d2e1f;
             margin-left: 10px;
           }
 
           .logout-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid white;
+            background: white;
+            color: #3d2e1f;
+            border: 1px solid #3d2e1f;
             padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
@@ -358,8 +357,8 @@ export default function AdminPage() {
           }
 
           .logout-btn:hover {
-            background: white;
-            color: #667eea;
+            background: #3d2e1f;
+            color: white;
           }
 
           .admin-container {
@@ -388,21 +387,19 @@ export default function AdminPage() {
           }
 
           .add-camera-btn {
-            background: linear-gradient(135deg, #28a745, #20c997);
+            background: #3d2e1f;
             color: white;
             border: none;
             padding: 15px 30px;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 16px;
             transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
           }
 
           .add-camera-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+            background: #5a4a3a;
           }
 
           .add-camera-btn:disabled {
@@ -650,16 +647,15 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
       <style jsx>{`
         .add-camera-form {
           background: white;
-          border-radius: 15px;
+          border-radius: 8px;
           padding: 30px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.1);
           margin-bottom: 40px;
-          border: 2px solid #28a745;
+          border: 1px solid #e1e5e9;
         }
 
         .add-camera-form h2 {
           text-align: center;
-          color: #28a745;
+          color: #3d2e1f;
           margin-bottom: 30px;
           font-size: 1.8rem;
         }
@@ -697,7 +693,7 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
           outline: none;
-          border-color: #28a745;
+          border-color: #3d2e1f;
         }
 
         .image-upload {
@@ -712,7 +708,7 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
 
         .file-label {
           background: #f8f9fa;
-          border: 2px dashed #28a745;
+          border: 1px dashed #3d2e1f;
           padding: 15px;
           border-radius: 8px;
           text-align: center;
@@ -721,7 +717,7 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
         }
 
         .file-label:hover {
-          background: #e8f5e8;
+          background: #f0f0f0;
         }
 
         .emoji-input {
@@ -746,7 +742,7 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
         }
 
         .add-btn {
-          background: linear-gradient(135deg, #28a745, #20c997);
+          background: #3d2e1f;
           color: white;
         }
 
@@ -755,9 +751,12 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
           color: white;
         }
 
-        .add-btn:hover:not(:disabled), .cancel-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        .add-btn:hover:not(:disabled) {
+          background: #5a4a3a;
+        }
+
+        .cancel-btn:hover {
+          background: #868e96;
         }
 
         .add-btn:disabled {
@@ -1040,18 +1039,14 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
       <style jsx>{`
         .camera-admin-card {
           background: white;
-          border-radius: 15px;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+          border-radius: 8px;
+          border: 1px solid #e1e5e9;
           overflow: hidden;
           transition: all 0.3s;
         }
 
-        .camera-admin-card:hover {
-          box-shadow: 0 12px 35px rgba(0,0,0,0.15);
-        }
-
         .card-header {
-          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          background: #f8f9fa;
           padding: 20px;
           display: flex;
           justify-content: space-between;
@@ -1114,9 +1109,16 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
           color: white;
         }
 
-        .edit-btn:hover, .cancel-btn:hover, .delete-btn:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        .edit-btn:hover {
+          background: #0056b3;
+        }
+
+        .cancel-btn:hover {
+          background: #5a6268;
+        }
+
+        .delete-btn:hover:not(:disabled) {
+          background: #c82333;
         }
 
         .delete-btn:disabled {
@@ -1162,7 +1164,7 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
 
         .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
           outline: none;
-          border-color: #667eea;
+          border-color: #3d2e1f;
         }
 
         .form-group textarea {
@@ -1175,11 +1177,11 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
         }
 
         .update-btn {
-          background: linear-gradient(135deg, #28a745, #20c997);
+          background: #3d2e1f;
           color: white;
           border: none;
           padding: 15px 40px;
-          border-radius: 10px;
+          border-radius: 8px;
           cursor: pointer;
           font-weight: bold;
           font-size: 16px;
@@ -1187,8 +1189,7 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
         }
 
         .update-btn:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+          background: #5a4a3a;
         }
 
         .update-btn:disabled {
