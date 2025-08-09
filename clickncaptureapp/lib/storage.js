@@ -120,15 +120,23 @@ export async function getCameras() {
     // Use Vercel KV in production, local file system in development
     if (process.env.NODE_ENV === 'production') {
       console.log('Loading cameras from Vercel KV...');
-      const cameras = await kv.get('cameras');
       
-      if (cameras && Array.isArray(cameras)) {
-        console.log(`Loaded ${cameras.length} cameras from Vercel KV`);
-        return cameras;
-      } else {
-        // Initialize KV with sample data
-        console.log('Initializing Vercel KV with sample cameras data');
-        await kv.set('cameras', sampleCameras);
+      try {
+        const cameras = await kv.get('cameras');
+        
+        if (cameras && Array.isArray(cameras) && cameras.length > 0) {
+          console.log(`✅ Loaded ${cameras.length} cameras from Vercel KV`);
+          return cameras;
+        } else {
+          // Initialize KV with sample data
+          console.log('🔄 Initializing Vercel KV with sample cameras data');
+          await kv.set('cameras', sampleCameras);
+          console.log('✅ KV initialized successfully');
+          return sampleCameras;
+        }
+      } catch (kvError) {
+        console.error('❌ KV Error:', kvError.message);
+        console.log('🔄 Falling back to sample data');
         return sampleCameras;
       }
     } else {
@@ -157,9 +165,15 @@ export async function saveCameras(cameras) {
   try {
     // Use Vercel KV in production, local file system in development
     if (process.env.NODE_ENV === 'production') {
-      console.log('Saving cameras to Vercel KV...');
-      await kv.set('cameras', cameras);
-      console.log(`Cameras data saved successfully to Vercel KV (${cameras.length} cameras)`);
+      console.log('💾 Saving cameras to Vercel KV...');
+      
+      try {
+        await kv.set('cameras', cameras);
+        console.log(`✅ Cameras data saved successfully to Vercel KV (${cameras.length} cameras)`);
+      } catch (kvError) {
+        console.error('❌ KV Save Error:', kvError.message);
+        throw new Error('Failed to save to KV: ' + kvError.message);
+      }
     } else {
       // Local development - use file system
       ensureDataDirectory();
