@@ -72,10 +72,10 @@
     "pricing": {
       "1-2 days": 330,
       "3-5 days": 300,
-      "6+ days": 250
+      "6+ days": 251
     },
     "inclusions": "32GB Memory Card, Camera Charger, Camera Case, Wrist Strap",
-    "available": false,
+    "available": true,
     "availableDate": "Available by August 20, 2025",
     "description": "Perfect beginner camera for capturing life's moments with ease."
   },
