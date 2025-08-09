@@ -156,12 +156,73 @@ export async function saveCameras(cameras) {
     // Update cache immediately for session persistence
     camerasCache = cameras;
     
-    // Save to file system
+    // Save to file system first
     ensureDataDirectory();
     fs.writeFileSync(dataFilePath, JSON.stringify(cameras, null, 2));
+    
+    // For permanent storage: Save to GitHub repository
+    if (process.env.NODE_ENV === 'production') {
+      try {
+        await saveToGitHub(cameras);
+        console.log(`✅ Cameras data saved permanently to GitHub (${cameras.length} cameras)`);
+      } catch (githubError) {
+        console.error('GitHub save failed, but local save succeeded:', githubError.message);
+      }
+    }
+    
     console.log(`✅ Cameras data saved successfully (${cameras.length} cameras)`);
   } catch (error) {
     console.error('Error saving cameras data:', error.message);
     throw new Error('Failed to save cameras data: ' + error.message);
+  }
+}
+
+// Save to GitHub repository for permanent storage
+async function saveToGitHub(cameras) {
+  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+  const REPO_OWNER = 'KazuyatheDev';
+  const REPO_NAME = 'ClicknCaptureApp';
+  const FILE_PATH = 'data/cameras.json';
+  
+  if (!GITHUB_TOKEN) {
+    throw new Error('GitHub token not configured');
+  }
+  
+  try {
+    // Get current file to get its SHA
+    const getCurrentFile = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json'
+      }
+    });
+    
+    const fileData = await getCurrentFile.json();
+    const fileSha = fileData.sha;
+    
+    // Update the file
+    const updateResponse = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${GITHUB_TOKEN}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Update camera data - Admin changes from ${new Date().toISOString()}`,
+        content: Buffer.from(JSON.stringify(cameras, null, 2)).toString('base64'),
+        sha: fileSha
+      })
+    });
+    
+    if (!updateResponse.ok) {
+      throw new Error(`GitHub API error: ${updateResponse.statusText}`);
+    }
+    
+    console.log('✅ Successfully committed camera data to GitHub');
+    
+  } catch (error) {
+    console.error('GitHub save error:', error.message);
+    throw error;
   }
 }
