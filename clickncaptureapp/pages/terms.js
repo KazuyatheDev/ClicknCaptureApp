@@ -91,8 +91,8 @@ export default function TermsPage() {
                 <h3>Click & Capture Rentals</h3>
                 <p>Professional Camera Rental Services</p>
                 <p>📍 Service Areas: Bulacan, Quezon City, Caloocan</p>
-                <p>📞 Contact: +63-XXX-XXX-XXXX</p>
-                <p>📧 info@clickandcapturerentals.com</p>
+                <p>📞 Contact: 0966-189-6990</p>
+                <p>📧 clickandcapturerentals@gmail.com</p>
               </div>
               
               <div className="footer-social">

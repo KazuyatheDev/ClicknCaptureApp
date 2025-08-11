@@ -7,6 +7,7 @@ export default function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
     console.log('useEffect triggered, isAuthenticated:', isAuthenticated);
@@ -62,8 +63,10 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
+        const result = await response.json();
         await fetchCameras();
-        alert('Camera updated successfully!');
+        setSuccessMessage(`✅ Camera updated successfully! Status: ${response.status} OK - Changes saved to GitHub`);
+        setTimeout(() => setSuccessMessage(''), 5000);
       } else {
         alert('Failed to update camera');
       }
@@ -83,9 +86,11 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
+        const result = await response.json();
         await fetchCameras();
         setShowAddForm(false);
-        alert('Camera added successfully!');
+        setSuccessMessage(`✅ Camera added successfully! Status: ${response.status} OK - Changes saved to GitHub`);
+        setTimeout(() => setSuccessMessage(''), 5000);
       } else {
         alert('Failed to add camera');
       }
@@ -107,8 +112,10 @@ export default function AdminPage() {
       });
 
       if (response.ok) {
+        const result = await response.json();
         await fetchCameras();
-        alert('Camera deleted successfully!');
+        setSuccessMessage(`✅ Camera deleted successfully! Status: ${response.status} OK - Changes saved to GitHub`);
+        setTimeout(() => setSuccessMessage(''), 5000);
       } else {
         alert('Failed to delete camera');
       }
@@ -263,8 +270,14 @@ export default function AdminPage() {
 
         {/* Admin Content */}
         <div className="admin-container">
-          <h1>Camera Inventory Management</h1>
+          <h1>Camera Inventory</h1>
           <p className="subtitle">Manage your camera rental inventory ({cameras.length} cameras loaded)</p>
+          
+          {successMessage && (
+            <div className="success-message">
+              {successMessage}
+            </div>
+          )}
           
           <div className="admin-actions">
             <button 
@@ -413,6 +426,29 @@ export default function AdminPage() {
             flex-direction: column;
             gap: 30px;
           }
+
+          .success-message {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 500;
+            animation: slideDown 0.3s ease-out;
+          }
+
+          @keyframes slideDown {
+            from {
+              opacity: 0;
+              transform: translateY(-10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
         `}</style>
       </div>
     </>
@@ -553,40 +589,28 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
             </div>
           </div>
 
-          <div className="form-group">
-            <label>1-2 Days Rate (PHP) *</label>
-            <input
-              type="number"
-              value={formData.pricing['1-2 days']}
-              onChange={(e) => handleChange('pricing.1-2 days', e.target.value)}
-              min="0"
-              step="50"
+          <div className="form-group full-width">
+            <label>Pricing Information *</label>
+            <textarea
+              value={`1-2 days: ${formData.pricing['1-2 days']}\n3-5 days: ${formData.pricing['3-5 days']}\n6+ days: ${formData.pricing['6+ days']}`}
+              onChange={(e) => {
+                const lines = e.target.value.split('\n');
+                const newPricing = {};
+                lines.forEach(line => {
+                  const [key, value] = line.split(':').map(s => s.trim());
+                  if (key && value) {
+                    newPricing[key] = parseInt(value) || 0;
+                  }
+                });
+                setFormData(prev => ({ ...prev, pricing: { ...prev.pricing, ...newPricing } }));
+              }}
+              rows="3"
+              placeholder="1-2 days: 500\n3-5 days: 450\n6+ days: 400"
               required
             />
-          </div>
-
-          <div className="form-group">
-            <label>3-5 Days Rate (PHP) *</label>
-            <input
-              type="number"
-              value={formData.pricing['3-5 days']}
-              onChange={(e) => handleChange('pricing.3-5 days', e.target.value)}
-              min="0"
-              step="50"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label>6+ Days Rate (PHP) *</label>
-            <input
-              type="number"
-              value={formData.pricing['6+ days']}
-              onChange={(e) => handleChange('pricing.6+ days', e.target.value)}
-              min="0"
-              step="50"
-              required
-            />
+            <small style={{color: '#666', fontSize: '0.8rem', marginTop: '5px', display: 'block'}}>
+              Format: "1-2 days: 500" (one per line)
+            </small>
           </div>
 
           <div className="form-group">
@@ -921,37 +945,28 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
               </div>
             </div>
 
-            <div className="form-group">
-              <label>1-2 Days Rate (PHP)</label>
-              <input
-                type="number"
-                value={formData.pricing['1-2 days']}
-                onChange={(e) => handleChange('pricing.1-2 days', e.target.value)}
-                min="0"
+            <div className="form-group full-width">
+              <label>Pricing Information</label>
+              <textarea
+                value={`1-2 days: ${formData.pricing['1-2 days']}\n3-5 days: ${formData.pricing['3-5 days']}\n6+ days: ${formData.pricing['6+ days']}`}
+                onChange={(e) => {
+                  const lines = e.target.value.split('\n');
+                  const newPricing = {};
+                  lines.forEach(line => {
+                    const [key, value] = line.split(':').map(s => s.trim());
+                    if (key && value) {
+                      newPricing[key] = parseInt(value) || 0;
+                    }
+                  });
+                  setFormData(prev => ({ ...prev, pricing: { ...prev.pricing, ...newPricing } }));
+                }}
+                rows="3"
+                placeholder="1-2 days: 500\n3-5 days: 450\n6+ days: 400"
                 required
               />
-            </div>
-
-            <div className="form-group">
-              <label>3-5 Days Rate (PHP)</label>
-              <input
-                type="number"
-                value={formData.pricing['3-5 days']}
-                onChange={(e) => handleChange('pricing.3-5 days', e.target.value)}
-                min="0"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>6+ Days Rate (PHP)</label>
-              <input
-                type="number"
-                value={formData.pricing['6+ days']}
-                onChange={(e) => handleChange('pricing.6+ days', e.target.value)}
-                min="0"
-                required
-              />
+              <small style={{color: '#666', fontSize: '0.8rem', marginTop: '5px', display: 'block'}}>
+                Format: "1-2 days: 500" (one per line)
+              </small>
             </div>
 
             <div className="form-group">

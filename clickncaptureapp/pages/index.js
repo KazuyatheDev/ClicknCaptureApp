@@ -174,34 +174,35 @@ export default function HomePage() {
           {/* Date Filter Section */}
           <section className="filter-section">
             <div className="container">
-              <h2>Professional Camera Rentals</h2>
-              <p className="subtitle">Capture your moments with professional equipment</p>
               
-              <div className="date-filters">
-                <div className="date-group">
-                  <label>From</label>
-                  <input
-                    type="date"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
-                  />
+              <div className="date-picker-section">
+                <h3 className="date-picker-title">When do you need it?</h3>
+                <div className="date-filters">
+                  <div className="date-group">
+                    <label>Pick-up:</label>
+                    <input
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      min={new Date().toISOString().split('T')[0]}
+                    />
+                  </div>
+                  <div className="date-group">
+                    <label>Return:</label>
+                    <input
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      min={startDate}
+                    />
+                  </div>
+                  <button onClick={filterByDate} className="filter-btn inline">
+                    Check Availability
+                  </button>
+                  <button onClick={resetFilter} className="reset-btn inline">
+                    Show All
+                  </button>
                 </div>
-                <div className="date-group">
-                  <label>To</label>
-                  <input
-                    type="date"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
-                    min={startDate}
-                  />
-                </div>
-                <button onClick={filterByDate} className="filter-btn inline">
-                  Check Availability
-                </button>
-                <button onClick={resetFilter} className="reset-btn inline">
-                  Show All
-                </button>
               </div>
             </div>
           </section>
@@ -291,10 +292,10 @@ export default function HomePage() {
                       {camera.available ? (
                         <div className="action-buttons">
                           <button onClick={() => reserveCamera(camera)} className="reserve-btn">
-                            Reserve
+                            Reserve Now
                           </button>
                           <button onClick={() => openMessenger(camera)} className="messenger-btn">
-                            Message
+                            Message Us
                           </button>
                         </div>
                       ) : (
@@ -344,8 +345,8 @@ export default function HomePage() {
                 <h3>Click & Capture Rentals</h3>
                 <p>Professional Camera Rental Services</p>
                 <p>📍 Meet up Places Areas: Bulacan, Quezon City, Caloocan</p>
-                <p>📞 Contact: +63-XXX-XXX-XXXX</p>
-                <p>📧 info@clickandcapturerentals.com</p>
+                <p>📞 Contact: 0966-189-6990</p>
+                <p>📧 clickandcapturerentals@gmail.com</p>
               </div>
               
               <div className="footer-social">
@@ -529,6 +530,18 @@ export default function HomePage() {
           .filter-section {
             background: linear-gradient(135deg, #f8f6f3 0%, #f0ede7 100%);
             padding: 2rem 0;
+            text-align: center;
+          }
+
+          .date-picker-section {
+            margin-bottom: 1.5rem;
+          }
+
+          .date-picker-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #3d2e1f;
+            margin-bottom: 1.5rem;
             text-align: center;
           }
 
@@ -995,8 +1008,12 @@ export default function HomePage() {
 
           /* Mobile Responsiveness */
           @media (max-width: 768px) {
+            .header {
+              padding: 1.5rem 0;
+            }
+
             .header-container {
-              padding: 0 1rem;
+              padding: 0 1.5rem;
             }
 
             .nav-menu {
@@ -1021,9 +1038,71 @@ export default function HomePage() {
               max-width: 180px;
             }
 
-            .footer-content {
+            .filter-section {
+              padding: 3rem 0;
+            }
+
+            .date-picker-title {
+              font-size: 1.2rem;
+              margin-bottom: 2rem;
+            }
+
+            .date-filters {
+              flex-direction: column;
+              align-items: stretch;
+              gap: 1rem;
+              padding: 0 1rem;
+            }
+
+            .date-group {
+              margin-bottom: 0.5rem;
+            }
+
+            .date-group input {
+              padding: 1rem;
+              font-size: 1rem;
+            }
+
+            .filter-btn.inline, .reset-btn.inline {
+              margin-top: 0.5rem;
+              width: 100%;
+              padding: 1rem;
+              font-size: 1rem;
+            }
+
+            .cameras-section {
+              padding: 3rem 0;
+            }
+
+            .camera-grid {
               grid-template-columns: 1fr;
               gap: 2rem;
+            }
+
+            .camera-card {
+              margin-bottom: 1rem;
+            }
+
+            .camera-info {
+              padding: 1.5rem;
+            }
+
+            .testimonials-section {
+              padding: 3rem 0;
+            }
+
+            .testimonials-grid {
+              grid-template-columns: 1fr;
+              gap: 2rem;
+            }
+
+            .footer {
+              padding: 3rem 0 2rem;
+            }
+
+            .footer-content {
+              grid-template-columns: 1fr;
+              gap: 2.5rem;
               text-align: center;
             }
 
@@ -1031,45 +1110,70 @@ export default function HomePage() {
               justify-content: center;
             }
 
-            .filter-section h1 {
-              font-size: 2rem;
-            }
-
-            .date-filters {
-              flex-direction: column;
-              align-items: stretch;
-              gap: 0.75rem;
-            }
-
-            .filter-btn.inline, .reset-btn.inline {
-              margin-top: 0;
-              width: 100%;
-            }
-
-            .camera-grid {
-              grid-template-columns: 1fr;
-            }
-
-            .testimonials-grid {
-              grid-template-columns: 1fr;
-            }
-
             .container {
-              padding: 0 1rem;
+              padding: 0 1.5rem;
             }
           }
 
           @media (max-width: 480px) {
-            .filter-section {
-              padding: 2rem 0;
+            .header {
+              padding: 1.25rem 0;
             }
 
-            .filter-section h1 {
-              font-size: 1.8rem;
+            .header-container {
+              padding: 0 1rem;
+            }
+
+            .logo-image {
+              height: 45px;
+              max-width: 150px;
+            }
+
+            .business-name {
+              font-size: 1.2rem;
+            }
+
+            .filter-section {
+              padding: 2.5rem 0;
+            }
+
+            .date-picker-title {
+              font-size: 1.1rem;
+              margin-bottom: 1.5rem;
+            }
+
+            .date-filters {
+              padding: 0 0.5rem;
+            }
+
+            .cameras-section {
+              padding: 2.5rem 0;
+            }
+
+            .camera-info {
+              padding: 1.25rem;
             }
 
             .action-buttons {
               flex-direction: column;
+              gap: 0.75rem;
+            }
+
+            .reserve-btn, .messenger-btn {
+              padding: 0.75rem;
+              font-size: 0.9rem;
+            }
+
+            .testimonials-section {
+              padding: 2.5rem 0;
+            }
+
+            .footer {
+              padding: 2.5rem 0 1.5rem;
+            }
+
+            .container {
+              padding: 0 1rem;
             }
           }
 
