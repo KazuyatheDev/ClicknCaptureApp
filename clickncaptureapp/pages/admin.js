@@ -270,7 +270,6 @@ export default function AdminPage() {
 
         {/* Admin Content */}
         <div className="admin-container">
-          <h1>Camera Inventory</h1>
           <p className="subtitle">Manage your camera rental inventory ({cameras.length} cameras loaded)</p>
           
           {successMessage && (
@@ -377,7 +376,7 @@ export default function AdminPage() {
           .admin-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 20px 15px;
           }
 
           .admin-container h1 {
@@ -389,14 +388,14 @@ export default function AdminPage() {
 
           .subtitle {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             color: #666;
             font-size: 1.1rem;
           }
 
           .admin-actions {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
           }
 
           .add-camera-btn {
@@ -424,7 +423,7 @@ export default function AdminPage() {
           .cameras-list {
             display: flex;
             flex-direction: column;
-            gap: 30px;
+            gap: 20px;
           }
 
           .success-message {
@@ -614,25 +613,54 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
           </div>
 
           <div className="form-group">
-            <label>Availability Status</label>
+            <label>Camera Available Today ?: Yes or No</label>
             <select
               value={formData.available}
-              onChange={(e) => handleChange('available', e.target.value)}
+              onChange={(e) => {
+                handleChange('available', e.target.value);
+                // Auto-set date based on availability choice
+                if (e.target.value === 'true') {
+                  handleChange('availableDate', 'Available Today');
+                } else {
+                  handleChange('availableDate', '');
+                }
+              }}
             >
-              <option value="true">Available</option>
-              <option value="false">Unavailable</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
             </select>
           </div>
 
           <div className="form-group full-width">
-            <label>Availability Date *</label>
-            <input
-              type="text"
-              value={formData.availableDate}
-              onChange={(e) => handleChange('availableDate', e.target.value)}
-              placeholder="e.g., Available Today or Available by August 15, 2025"
-              required
-            />
+            <label>
+              {formData.available === 'true' ? 'Availability Status' : 'Available Date *'}
+            </label>
+            {formData.available === 'true' ? (
+              <input
+                type="text"
+                value="Available Today"
+                disabled
+                style={{ backgroundColor: '#f8f9fa', color: '#6c757d' }}
+              />
+            ) : (
+              <input
+                type="date"
+                value={formData.availableDate.includes('Available by') ? 
+                  formData.availableDate.replace('Available by ', '').split(',')[0] : 
+                  formData.availableDate}
+                onChange={(e) => {
+                  const selectedDate = new Date(e.target.value);
+                  const formattedDate = `Available by ${selectedDate.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}`;
+                  handleChange('availableDate', formattedDate);
+                }}
+                min={new Date().toISOString().split('T')[0]}
+                required
+              />
+            )}
           </div>
 
           <div className="form-group full-width">
@@ -671,17 +699,18 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
       <style jsx>{`
         .add-camera-form {
           background: white;
-          border-radius: 8px;
-          padding: 30px;
-          margin-bottom: 40px;
-          border: 1px solid #e1e5e9;
+          border-radius: 12px;
+          padding: 20px;
+          margin-bottom: 20px;
+          border: 2px solid #e1e5e9;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .add-camera-form h2 {
           text-align: center;
           color: #3d2e1f;
-          margin-bottom: 30px;
-          font-size: 1.8rem;
+          margin-bottom: 20px;
+          font-size: 1.6rem;
         }
 
         .form-grid {
@@ -970,10 +999,18 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
             </div>
 
             <div className="form-group">
-              <label>Available</label>
+              <label>Camera Available Today ?: Yes or No</label>
               <select
                 value={formData.available}
-                onChange={(e) => handleChange('available', e.target.value)}
+                onChange={(e) => {
+                  handleChange('available', e.target.value);
+                  // Auto-set date based on availability choice
+                  if (e.target.value === 'true') {
+                    handleChange('availableDate', 'Available Today');
+                  } else if (formData.availableDate === 'Available Today') {
+                    handleChange('availableDate', '');
+                  }
+                }}
               >
                 <option value="true">Yes</option>
                 <option value="false">No</option>
@@ -981,14 +1018,35 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
             </div>
 
             <div className="form-group full-width">
-              <label>Available Date</label>
-              <input
-                type="text"
-                value={formData.availableDate}
-                onChange={(e) => handleChange('availableDate', e.target.value)}
-                placeholder="e.g., Available Today or Available by August 15, 2025"
-                required
-              />
+              <label>
+                {formData.available === 'true' ? 'Availability Status' : 'Available Date *'}
+              </label>
+              {formData.available === 'true' ? (
+                <input
+                  type="text"
+                  value="Available Today"
+                  disabled
+                  style={{ backgroundColor: '#f8f9fa', color: '#6c757d' }}
+                />
+              ) : (
+                <input
+                  type="date"
+                  value={formData.availableDate.includes('Available by') ? 
+                    formData.availableDate.replace('Available by ', '').split(',')[0] : 
+                    formData.availableDate}
+                  onChange={(e) => {
+                    const selectedDate = new Date(e.target.value);
+                    const formattedDate = `Available by ${selectedDate.toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}`;
+                    handleChange('availableDate', formattedDate);
+                  }}
+                  min={new Date().toISOString().split('T')[0]}
+                  required
+                />
+              )}
             </div>
 
             <div className="form-group full-width">
@@ -1054,15 +1112,22 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
       <style jsx>{`
         .camera-admin-card {
           background: white;
-          border-radius: 8px;
-          border: 1px solid #e1e5e9;
+          border-radius: 12px;
+          border: 2px solid #e1e5e9;
           overflow: hidden;
           transition: all 0.3s;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          margin-bottom: 10px;
+        }
+
+        .camera-admin-card:hover {
+          border-color: #3d2e1f;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         .card-header {
           background: #f8f9fa;
-          padding: 20px;
+          padding: 15px 20px;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -1143,7 +1208,7 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
         }
 
         .edit-form {
-          padding: 30px;
+          padding: 20px;
         }
 
         .form-grid {
@@ -1214,7 +1279,7 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
         }
 
         .camera-preview {
-          padding: 30px;
+          padding: 20px;
         }
 
         .preview-grid {
