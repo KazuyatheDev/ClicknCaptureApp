@@ -258,6 +258,10 @@ export default function HomePage() {
                         <span className="type">{camera.type}</span>
                       </div>
 
+                      <div className="availability-info">
+                        {camera.availableDate}
+                      </div>
+
                       <div className="pricing-detailed">
                         <div className="pricing-title">Rental Rates</div>
                         <div className="price-list">
@@ -283,10 +287,6 @@ export default function HomePage() {
 
                       <div className="description-compact">
                         {camera.description}
-                      </div>
-
-                      <div className="availability-info">
-                        {camera.availableDate}
                       </div>
 
                       {camera.available ? (
@@ -841,10 +841,15 @@ export default function HomePage() {
           }
 
           .availability-info {
-            font-size: 0.8rem;
-            color: #8b6f3e;
-            margin-bottom: 1rem;
-            font-weight: 500;
+            font-size: 1.1rem;
+            color: #2d5a27;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            background: #e8f5e8;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #2d5a27;
           }
 
           .action-buttons {

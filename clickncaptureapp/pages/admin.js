@@ -633,7 +633,7 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
             </div>
             
             <div className="availability-date">
-              <label>Available Date {formData.available === 'false' ? '*' : ''}</label>
+              <label>Available Date {(formData.available === 'false' || formData.available === false) ? '*' : ''}</label>
               <input
                 type="date"
                 value={(() => {
@@ -655,11 +655,11 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
                   handleChange('availableDate', formattedDate);
                 }}
                 min={new Date().toISOString().split('T')[0]}
-                disabled={formData.available === 'true'}
-                required={formData.available === 'false'}
+                disabled={formData.available === 'true' || formData.available === true}
+                required={formData.available === 'false' || formData.available === false}
                 style={{ 
-                  backgroundColor: formData.available === 'true' ? '#f8f9fa' : 'white',
-                  color: formData.available === 'true' ? '#6c757d' : '#333'
+                  backgroundColor: (formData.available === 'true' || formData.available === true) ? '#f8f9fa' : 'white',
+                  color: (formData.available === 'true' || formData.available === true) ? '#6c757d' : '#333'
                 }}
               />
             </div>
@@ -823,22 +823,46 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
         .form-group.availability-row {
           grid-column: 1 / -1;
           display: flex;
-          gap: 20px;
-          align-items: end;
+          gap: 15px;
+          align-items: flex-end;
+          width: 100%;
         }
 
         .availability-today {
-          flex: 1;
+          flex: 0 0 150px;
           display: flex;
           flex-direction: column;
           gap: 8px;
         }
 
         .availability-date {
-          flex: 2;
+          flex: 1;
           display: flex;
           flex-direction: column;
           gap: 8px;
+        }
+
+        .availability-today label,
+        .availability-date label {
+          font-weight: bold;
+          color: #333;
+          font-size: 0.9rem;
+          margin-bottom: 8px;
+        }
+
+        .availability-today select,
+        .availability-date input {
+          padding: 12px;
+          border: 2px solid #e1e5e9;
+          border-radius: 8px;
+          font-size: 14px;
+          transition: border-color 0.3s;
+        }
+
+        .availability-today select:focus,
+        .availability-date input:focus {
+          outline: none;
+          border-color: #3d2e1f;
         }
 
         @media (max-width: 768px) {
@@ -1052,7 +1076,7 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
               </div>
               
               <div className="availability-date">
-                <label>Available Date {formData.available === 'false' ? '*' : ''}</label>
+                <label>Available Date {(formData.available === 'false' || formData.available === false) ? '*' : ''}</label>
                 <input
                   type="date"
                   value={(() => {
@@ -1074,11 +1098,11 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
                     handleChange('availableDate', formattedDate);
                   }}
                   min={new Date().toISOString().split('T')[0]}
-                  disabled={formData.available === 'true'}
-                  required={formData.available === 'false'}
+                  disabled={formData.available === 'true' || formData.available === true}
+                  required={formData.available === 'false' || formData.available === false}
                   style={{ 
-                    backgroundColor: formData.available === 'true' ? '#f8f9fa' : 'white',
-                    color: formData.available === 'true' ? '#6c757d' : '#333'
+                    backgroundColor: (formData.available === 'true' || formData.available === true) ? '#f8f9fa' : 'white',
+                    color: (formData.available === 'true' || formData.available === true) ? '#6c757d' : '#333'
                   }}
                 />
               </div>
@@ -1342,22 +1366,46 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
         .form-group.availability-row {
           grid-column: 1 / -1;
           display: flex;
-          gap: 20px;
-          align-items: end;
+          gap: 15px;
+          align-items: flex-end;
+          width: 100%;
         }
 
         .availability-today {
-          flex: 1;
+          flex: 0 0 150px;
           display: flex;
           flex-direction: column;
           gap: 8px;
         }
 
         .availability-date {
-          flex: 2;
+          flex: 1;
           display: flex;
           flex-direction: column;
           gap: 8px;
+        }
+
+        .availability-today label,
+        .availability-date label {
+          font-weight: bold;
+          color: #333;
+          font-size: 0.9rem;
+          margin-bottom: 8px;
+        }
+
+        .availability-today select,
+        .availability-date input {
+          padding: 12px;
+          border: 2px solid #e1e5e9;
+          border-radius: 8px;
+          font-size: 14px;
+          transition: border-color 0.3s;
+        }
+
+        .availability-today select:focus,
+        .availability-date input:focus {
+          outline: none;
+          border-color: #3d2e1f;
         }
 
         @media (max-width: 768px) {
