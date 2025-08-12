@@ -618,11 +618,13 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
               <select
                 value={formData.available}
                 onChange={(e) => {
-                  handleChange('available', e.target.value);
-                  // Auto-set date based on availability choice
-                  if (e.target.value === 'true') {
+                  const isAvailable = e.target.value === 'true';
+                  handleChange('available', isAvailable);
+                  // Auto-set date and availability based on choice
+                  if (isAvailable) {
                     handleChange('availableDate', 'Available Today');
                   } else {
+                    // When "No" is selected, camera becomes unavailable
                     handleChange('availableDate', '');
                   }
                 }}
@@ -820,49 +822,50 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
           transform: none;
         }
 
-        .form-group.availability-row {
-          grid-column: 1 / -1;
-          display: flex;
-          gap: 15px;
-          align-items: flex-end;
-          width: 100%;
+        .availability-row {
+          grid-column: 1 / -1 !important;
+          display: flex !important;
+          flex-direction: row !important;
+          gap: 20px !important;
+          align-items: flex-end !important;
+          margin-bottom: 20px !important;
         }
 
         .availability-today {
-          flex: 0 0 150px;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+          flex: 0 0 200px !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 8px !important;
         }
 
         .availability-date {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+          flex: 1 !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 8px !important;
         }
 
         .availability-today label,
         .availability-date label {
-          font-weight: bold;
-          color: #333;
-          font-size: 0.9rem;
-          margin-bottom: 8px;
+          font-weight: bold !important;
+          color: #333 !important;
+          font-size: 0.9rem !important;
+          margin-bottom: 8px !important;
         }
 
         .availability-today select,
         .availability-date input {
-          padding: 12px;
-          border: 2px solid #e1e5e9;
-          border-radius: 8px;
-          font-size: 14px;
-          transition: border-color 0.3s;
+          padding: 12px !important;
+          border: 2px solid #e1e5e9 !important;
+          border-radius: 8px !important;
+          font-size: 14px !important;
+          transition: border-color 0.3s !important;
         }
 
         .availability-today select:focus,
         .availability-date input:focus {
-          outline: none;
-          border-color: #3d2e1f;
+          outline: none !important;
+          border-color: #3d2e1f !important;
         }
 
         @media (max-width: 768px) {
@@ -1061,11 +1064,13 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
                 <select
                   value={formData.available}
                   onChange={(e) => {
-                    handleChange('available', e.target.value);
-                    // Auto-set date based on availability choice
-                    if (e.target.value === 'true') {
+                    const isAvailable = e.target.value === 'true';
+                    handleChange('available', isAvailable);
+                    // Auto-set date and availability based on choice
+                    if (isAvailable) {
                       handleChange('availableDate', 'Available Today');
-                    } else if (formData.availableDate === 'Available Today') {
+                    } else {
+                      // When "No" is selected, camera becomes unavailable
                       handleChange('availableDate', '');
                     }
                   }}
@@ -1363,49 +1368,50 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
           line-height: 1.6;
         }
 
-        .form-group.availability-row {
-          grid-column: 1 / -1;
-          display: flex;
-          gap: 15px;
-          align-items: flex-end;
-          width: 100%;
+        .availability-row {
+          grid-column: 1 / -1 !important;
+          display: flex !important;
+          flex-direction: row !important;
+          gap: 20px !important;
+          align-items: flex-end !important;
+          margin-bottom: 20px !important;
         }
 
         .availability-today {
-          flex: 0 0 150px;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+          flex: 0 0 200px !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 8px !important;
         }
 
         .availability-date {
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+          flex: 1 !important;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 8px !important;
         }
 
         .availability-today label,
         .availability-date label {
-          font-weight: bold;
-          color: #333;
-          font-size: 0.9rem;
-          margin-bottom: 8px;
+          font-weight: bold !important;
+          color: #333 !important;
+          font-size: 0.9rem !important;
+          margin-bottom: 8px !important;
         }
 
         .availability-today select,
         .availability-date input {
-          padding: 12px;
-          border: 2px solid #e1e5e9;
-          border-radius: 8px;
-          font-size: 14px;
-          transition: border-color 0.3s;
+          padding: 12px !important;
+          border: 2px solid #e1e5e9 !important;
+          border-radius: 8px !important;
+          font-size: 14px !important;
+          transition: border-color 0.3s !important;
         }
 
         .availability-today select:focus,
         .availability-date input:focus {
-          outline: none;
-          border-color: #3d2e1f;
+          outline: none !important;
+          border-color: #3d2e1f !important;
         }
 
         @media (max-width: 768px) {

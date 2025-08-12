@@ -841,15 +841,10 @@ export default function HomePage() {
           }
 
           .availability-info {
-            font-size: 1.1rem;
-            color: #2d5a27;
-            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #3d2e1f;
+            margin-bottom: 1rem;
             font-weight: 600;
-            background: #e8f5e8;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
-            text-align: center;
-            border-left: 4px solid #2d5a27;
           }
 
           .action-buttons {
