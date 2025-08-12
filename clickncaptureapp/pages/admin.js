@@ -612,42 +612,39 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
             </small>
           </div>
 
-          <div className="form-group">
-            <label>Camera Available Today ?: Yes or No</label>
-            <select
-              value={formData.available}
-              onChange={(e) => {
-                handleChange('available', e.target.value);
-                // Auto-set date based on availability choice
-                if (e.target.value === 'true') {
-                  handleChange('availableDate', 'Available Today');
-                } else {
-                  handleChange('availableDate', '');
-                }
-              }}
-            >
-              <option value="true">Yes</option>
-              <option value="false">No</option>
-            </select>
-          </div>
-
-          <div className="form-group full-width">
-            <label>
-              {formData.available === 'true' ? 'Availability Status' : 'Available Date *'}
-            </label>
-            {formData.available === 'true' ? (
-              <input
-                type="text"
-                value="Available Today"
-                disabled
-                style={{ backgroundColor: '#f8f9fa', color: '#6c757d' }}
-              />
-            ) : (
+          <div className="form-group availability-row">
+            <div className="availability-today">
+              <label>Available Today?</label>
+              <select
+                value={formData.available}
+                onChange={(e) => {
+                  handleChange('available', e.target.value);
+                  // Auto-set date based on availability choice
+                  if (e.target.value === 'true') {
+                    handleChange('availableDate', 'Available Today');
+                  } else {
+                    handleChange('availableDate', '');
+                  }
+                }}
+              >
+                <option value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </div>
+            
+            <div className="availability-date">
+              <label>Available Date {formData.available === 'false' ? '*' : ''}</label>
               <input
                 type="date"
-                value={formData.availableDate.includes('Available by') ? 
-                  formData.availableDate.replace('Available by ', '').split(',')[0] : 
-                  formData.availableDate}
+                value={(() => {
+                  if (formData.availableDate === 'Available Today') return '';
+                  if (formData.availableDate.includes('Available by')) {
+                    const dateStr = formData.availableDate.replace('Available by ', '');
+                    const dateObj = new Date(dateStr);
+                    return isNaN(dateObj.getTime()) ? '' : dateObj.toISOString().split('T')[0];
+                  }
+                  return formData.availableDate;
+                })()}
                 onChange={(e) => {
                   const selectedDate = new Date(e.target.value);
                   const formattedDate = `Available by ${selectedDate.toLocaleDateString('en-US', { 
@@ -658,9 +655,14 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
                   handleChange('availableDate', formattedDate);
                 }}
                 min={new Date().toISOString().split('T')[0]}
-                required
+                disabled={formData.available === 'true'}
+                required={formData.available === 'false'}
+                style={{ 
+                  backgroundColor: formData.available === 'true' ? '#f8f9fa' : 'white',
+                  color: formData.available === 'true' ? '#6c757d' : '#333'
+                }}
               />
-            )}
+            </div>
           </div>
 
           <div className="form-group full-width">
@@ -818,6 +820,27 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
           transform: none;
         }
 
+        .form-group.availability-row {
+          grid-column: 1 / -1;
+          display: flex;
+          gap: 20px;
+          align-items: end;
+        }
+
+        .availability-today {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .availability-date {
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
         @media (max-width: 768px) {
           .form-grid {
             grid-template-columns: 1fr;
@@ -825,6 +848,16 @@ function AddCameraForm({ onAdd, onCancel, loading }) {
           
           .form-actions {
             flex-direction: column;
+          }
+
+          .form-group.availability-row {
+            flex-direction: column;
+            gap: 15px;
+          }
+          
+          .availability-today,
+          .availability-date {
+            flex: 1;
           }
         }
       `}</style>
@@ -998,42 +1031,39 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
               </small>
             </div>
 
-            <div className="form-group">
-              <label>Camera Available Today ?: Yes or No</label>
-              <select
-                value={formData.available}
-                onChange={(e) => {
-                  handleChange('available', e.target.value);
-                  // Auto-set date based on availability choice
-                  if (e.target.value === 'true') {
-                    handleChange('availableDate', 'Available Today');
-                  } else if (formData.availableDate === 'Available Today') {
-                    handleChange('availableDate', '');
-                  }
-                }}
-              >
-                <option value="true">Yes</option>
-                <option value="false">No</option>
-              </select>
-            </div>
-
-            <div className="form-group full-width">
-              <label>
-                {formData.available === 'true' ? 'Availability Status' : 'Available Date *'}
-              </label>
-              {formData.available === 'true' ? (
-                <input
-                  type="text"
-                  value="Available Today"
-                  disabled
-                  style={{ backgroundColor: '#f8f9fa', color: '#6c757d' }}
-                />
-              ) : (
+            <div className="form-group availability-row">
+              <div className="availability-today">
+                <label>Available Today?</label>
+                <select
+                  value={formData.available}
+                  onChange={(e) => {
+                    handleChange('available', e.target.value);
+                    // Auto-set date based on availability choice
+                    if (e.target.value === 'true') {
+                      handleChange('availableDate', 'Available Today');
+                    } else if (formData.availableDate === 'Available Today') {
+                      handleChange('availableDate', '');
+                    }
+                  }}
+                >
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+              
+              <div className="availability-date">
+                <label>Available Date {formData.available === 'false' ? '*' : ''}</label>
                 <input
                   type="date"
-                  value={formData.availableDate.includes('Available by') ? 
-                    formData.availableDate.replace('Available by ', '').split(',')[0] : 
-                    formData.availableDate}
+                  value={(() => {
+                    if (formData.availableDate === 'Available Today') return '';
+                    if (formData.availableDate.includes('Available by')) {
+                      const dateStr = formData.availableDate.replace('Available by ', '');
+                      const dateObj = new Date(dateStr);
+                      return isNaN(dateObj.getTime()) ? '' : dateObj.toISOString().split('T')[0];
+                    }
+                    return formData.availableDate;
+                  })()}
                   onChange={(e) => {
                     const selectedDate = new Date(e.target.value);
                     const formattedDate = `Available by ${selectedDate.toLocaleDateString('en-US', { 
@@ -1044,9 +1074,14 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
                     handleChange('availableDate', formattedDate);
                   }}
                   min={new Date().toISOString().split('T')[0]}
-                  required
+                  disabled={formData.available === 'true'}
+                  required={formData.available === 'false'}
+                  style={{ 
+                    backgroundColor: formData.available === 'true' ? '#f8f9fa' : 'white',
+                    color: formData.available === 'true' ? '#6c757d' : '#333'
+                  }}
                 />
-              )}
+              </div>
             </div>
 
             <div className="form-group full-width">
@@ -1304,6 +1339,27 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
           line-height: 1.6;
         }
 
+        .form-group.availability-row {
+          grid-column: 1 / -1;
+          display: flex;
+          gap: 20px;
+          align-items: end;
+        }
+
+        .availability-today {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .availability-date {
+          flex: 2;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+        }
+
         @media (max-width: 768px) {
           .card-header {
             flex-direction: column;
@@ -1317,6 +1373,16 @@ function CameraAdminForm({ camera, onUpdate, onDelete, loading }) {
 
           .preview-grid {
             grid-template-columns: 1fr;
+          }
+
+          .form-group.availability-row {
+            flex-direction: column;
+            gap: 15px;
+          }
+          
+          .availability-today,
+          .availability-date {
+            flex: 1;
           }
         }
       `}</style>
